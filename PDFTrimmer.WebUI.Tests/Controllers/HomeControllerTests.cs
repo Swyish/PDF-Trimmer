@@ -3,6 +3,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PDFTrimmer.WebUI.Controllers;
 using Moq;
 using PDFTrimmer.Services;
+using System.Web.Mvc;
+using System.Web;
+using PDFTrimmer.TestHelpers;
 
 namespace PDFTrimmer.WebUI.Tests.Controllers
 {
@@ -24,5 +27,46 @@ namespace PDFTrimmer.WebUI.Tests.Controllers
         {
             Assert.IsNotNull(_homeController);
         }
+
+        #region Index Post Method
+
+        [TestMethod]
+        public void HomeController_IndexPost_HandlesInvalidFilePost()
+        {
+            var expected = "Oops. Something went wrong. Please upload a pdf file again.";
+            var actual = ((ViewResult)_homeController.Index(null)).ViewBag.ErrorMessage;
+
+            Assert.AreEqual(expected, actual);
+
+            var httpPostedFileBase = new FakeHttpPostedFileBase("WrongType");
+            var actual2 = ((ViewResult)_homeController.Index(httpPostedFileBase)).ViewBag.ErrorMessage;
+
+            Assert.AreEqual(expected, actual2);
+        }
+
+        [TestMethod]
+        public void HomeController_IndexPost_HandlesExceptionFromTrimmerService()
+        {
+            var testResponse = new DocInfoResponse()
+            {
+                IsSuccessful = false,
+                TrimmerException = new InvalidPDFException()
+            };
+            _trimmerServiceMock.Setup(p => p.GetDocInfo(It.IsAny<DocInfoRequest>())).Returns(testResponse);
+
+            _homeController = new HomeController(_trimmerServiceMock.Object);
+            _homeController.ControllerContext = new ControllerContext();
+            _homeController.ControllerContext.HttpContext = new HttpContextWrapper(
+                ControllerHelper.SetFakeHttpContext("Test"));
+
+            var httpPostedFileBase = new FakeHttpPostedFileBase("application/pdf");
+
+            var expected = "Cannot read the PDF file. Please make sure the PDF file is not corrupted.";
+            var actual = ((ViewResult)_homeController.Index(httpPostedFileBase)).ViewBag.ErrorMessage;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        #endregion
     }
 }

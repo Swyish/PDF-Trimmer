@@ -114,6 +114,10 @@
       <Project>{8d49a66a-91f0-4105-8616-4a3d310f0208}</Project>
       <Name>PDFTrimmer.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PDFTrimmer.TestHelpers\PDFTrimmer.TestHelpers.csproj">
+      <Project>{37336670-4f97-4cf6-82f4-cb89e8f65d0b}</Project>
+      <Name>PDFTrimmer.TestHelpers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PDFTrimmer.WebUI\PDFTrimmer.WebUI.csproj">
       <Project>{B364724B-C09B-4207-8417-EE509DC65103}</Project>
       <Name>PDFTrimmer.WebUI</Name>

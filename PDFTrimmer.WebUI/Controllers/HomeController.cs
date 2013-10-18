@@ -24,28 +24,43 @@ namespace PDFTrimmer.WebUI.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Handles the uploaded source pdf file
+        /// </summary>
+        /// <param name="pdfSource">the source PDF file that would be processed</param>
+        /// <returns>View</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Index(HttpPostedFileBase pdfSource)
         {
-            // Do validations
+            // Validate the uploaded file
             if (pdfSource == null || pdfSource.ContentType != "application/pdf")
             {
+                ViewBag.ErrorMessage = "Oops. Something went wrong. Please upload a pdf file again.";
                 return View();
             }
 
-            // Creating a unique name for the uploaded PDF file
+            // Create a unique name for the uploaded file
             var tempFileName = Guid.NewGuid() + ".pdf";
+            // Set a temp file path for the uploaded file
             var tempFilePath = HostingEnvironment.MapPath("/Data/" + tempFileName);
 
-            // Save to the temporary data folder, then store the file path to the session, so I can be loaded on the next step
+            // Save the uploaded file to a temp location
             pdfSource.SaveAs(tempFilePath);
-            Session.Contents["pdfSource"] = tempFileName;
-
+            // Save the file name to the session for the future reference
+            
+            HttpContext.Items["pdfSource"] = tempFileName;
+           
             var DocInfoResponse = _trimmerService.GetDocInfo(new DocInfoRequest()
             {
                 SourceFilePath = tempFilePath
             });
+
+            if (!DocInfoResponse.IsSuccessful)
+            {
+                ViewBag.ErrorMessage = DocInfoResponse.TrimmerException.Message;
+                return View();
+            }
 
             System.IO.File.WriteAllBytes(HostingEnvironment.MapPath("/Data/sample-" + tempFileName), DocInfoResponse.SamplePages);
 
