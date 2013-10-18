@@ -73,7 +73,7 @@ namespace PDFTrimmer.WebUI.Controllers
         {
             var response = _trimmerService.Trim(new TrimmerRequest()
             {
-                SourceFilePath = HostingEnvironment.MapPath("/Data/" + Session.Contents["pdfSource"]),
+                SourceFilePath = HostingEnvironment.MapPath("/Data/" + HttpContext.Items["pdfSource"]),
                 llx = llx,
                 lly = lly,
                 urx = urx,
@@ -82,9 +82,9 @@ namespace PDFTrimmer.WebUI.Controllers
 
             if (response.IsSuccessful)
             {
-                Session.Contents["pdfSource"] = null;
-                System.IO.File.Delete(HostingEnvironment.MapPath("/Data/" + Session.Contents["pdfSource"].ToString()));
-                System.IO.File.Delete(HostingEnvironment.MapPath("/Data/sample-" + Session.Contents["pdfSource"].ToString()));
+                HttpContext.Items["pdfSource"] = null;
+                System.IO.File.Delete(HostingEnvironment.MapPath("/Data/" + HttpContext.Items["pdfSource"].ToString()));
+                System.IO.File.Delete(HostingEnvironment.MapPath("/Data/sample-" + HttpContext.Items["pdfSource"].ToString()));
 
                 return null;
             }

@@ -59,8 +59,8 @@ namespace PDFTrimmer.Services
                     response.SamplePages = output.GetBuffer();
                 }
 
-
                 var page = pdfReader.GetPageSize(1);
+                response.IsSuccessful = true;
             }
 
             return response;
