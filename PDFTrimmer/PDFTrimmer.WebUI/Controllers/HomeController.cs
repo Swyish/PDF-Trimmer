@@ -53,7 +53,7 @@ namespace PDFTrimmer.WebUI.Controllers
             pdfSource.SaveAs(tempFilePath);
             // Save the file name to the session for the future reference
             
-            HttpContext.Items["pdfSource"] = tempFileName;
+            Session.Contents["pdfSource"] = tempFileName;
            
             var DocInfoResponse = _trimmerService.GetDocInfo(new DocInfoRequest()
             {
@@ -94,7 +94,7 @@ namespace PDFTrimmer.WebUI.Controllers
 
             var response = _trimmerService.Trim(new TrimmerRequest()
             {
-                SourceFilePath = HostingEnvironment.MapPath("/Data/" + HttpContext.Items["pdfSource"]),
+                SourceFilePath = HostingEnvironment.MapPath("/Data/" + Session.Contents["pdfSource"]),
                 llx = llx,
                 lly = lly,
                 urx = urx,
@@ -103,11 +103,18 @@ namespace PDFTrimmer.WebUI.Controllers
 
             if (response.IsSuccessful)
             {
-                HttpContext.Items["pdfSource"] = null;
-                System.IO.File.Delete(HostingEnvironment.MapPath("/Data/" + HttpContext.Items["pdfSource"].ToString()));
-                System.IO.File.Delete(HostingEnvironment.MapPath("/Data/sample-" + HttpContext.Items["pdfSource"].ToString()));
+                System.IO.File.Delete(HostingEnvironment.MapPath("/Data/" + Session.Contents["pdfSource"].ToString()));
+                System.IO.File.Delete(HostingEnvironment.MapPath("/Data/sample-" + Session.Contents["pdfSource"].ToString()));
+                Session.Contents["pdfSource"] = null;
 
-                return null;
+                MemoryStream ms = new MemoryStream(response.OutputFile);
+                Response.ContentType = "application/pdf";
+                Response.AddHeader("content-disposition", "attachment;filename=NamedQuery.pdf");
+                Response.Buffer = true;
+                ms.WriteTo(Response.OutputStream);
+                Response.End();
+
+                return new FileStreamResult(ms, "application/pdf");
             }
             else
             {

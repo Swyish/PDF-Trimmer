@@ -15,7 +15,7 @@ else
     @section scripts {
         <script type="text/javascript" src="~/Scripts/pdf.js"></script>
         <script type="text/javascript">
-            PDFJS.getDocument('/Data/sample-@HttpContext.Current.Items["pdfSource"].ToString()').then(function (pdf) {
+            PDFJS.getDocument('/Data/sample-@Session.Contents["pdfSource"]').then(function (pdf) {
 
                 // Using promise to fetch the page
                 pdf.getPage(1).then(function (page) {

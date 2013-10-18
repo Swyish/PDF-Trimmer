@@ -24,7 +24,7 @@ namespace PDFTrimmer.Services
             }
 
             var response = new DocInfoResponse();
-            
+
             PdfReader.unethicalreading = true;
 
             using (PdfReader pdfReader = new PdfReader(request.SourceFilePath))
@@ -59,7 +59,6 @@ namespace PDFTrimmer.Services
                     response.SamplePages = output.GetBuffer();
                 }
 
-                var page = pdfReader.GetPageSize(1);
                 response.IsSuccessful = true;
             }
 
@@ -68,7 +67,56 @@ namespace PDFTrimmer.Services
 
         public TrimmerResponse Trim(TrimmerRequest request)
         {
-            throw new NotImplementedException();
+            PdfReader.unethicalreading = true;
+
+            TrimmerResponse response = new TrimmerResponse();
+
+            using (var pdfReader = new PdfReader(request.SourceFilePath))
+            {
+                PdfRectangle rect = new PdfRectangle(request.llx, request.lly,
+                    PageSize.LETTER.Width - request.urx, PageSize.LETTER.Height - request.ury);
+
+                using (var output = new MemoryStream())
+                {
+                    Document doc = new Document();
+                    PdfSmartCopy smartCopy = new PdfSmartCopy(doc, output);
+
+
+                    // Open the newly created document
+                    doc.Open();
+                    PdfContentByte contentByte = smartCopy.DirectContent;
+                    // Loop through all pages of the source document
+                    for (int i = 1; i <= pdfReader.NumberOfPages; i++)
+                    {
+                        // Get a page
+                        var page = pdfReader.GetPageN(i);
+
+                        // Apply the rectangle filter we created
+                        page.Put(PdfName.CROPBOX, rect);
+                        page.Put(PdfName.MEDIABOX, rect);
+
+                        // Copy the content and insert into the new document
+                        var copiedPage = smartCopy.GetImportedPage(pdfReader, i);
+                        smartCopy.AddPage(copiedPage);
+                    }
+
+                    // Close the output document
+                    doc.Close();
+                    response.OutputFile = output.GetBuffer();
+                }
+            }
+
+            if (response.OutputFile != null && response.OutputFile.Length > 0)
+            {
+                response.IsSuccessful = true;
+            }
+            else
+            {
+                response.IsSuccessful = false;
+                response.TrimmerException = new TrimmerException();
+            }
+
+            return response;
         }
     }
 }
