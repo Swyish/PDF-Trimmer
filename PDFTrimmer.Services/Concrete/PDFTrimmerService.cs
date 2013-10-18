@@ -13,6 +13,16 @@ namespace PDFTrimmer.Services
     {
         public DocInfoResponse GetDocInfo(DocInfoRequest request)
         {
+            // Handling invalid requests
+            if (request == null)
+            {
+                return new DocInfoResponse()
+                {
+                    IsSuccessful = false,
+                    TrimmerException = new TrimmerRequestException()
+                };
+            }
+
             var response = new DocInfoResponse();
             
             PdfReader.unethicalreading = true;

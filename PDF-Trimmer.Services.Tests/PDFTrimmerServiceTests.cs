@@ -20,5 +20,21 @@ namespace PDF_Trimmer.Services.Tests
         {
             Assert.IsNotNull(_trimmerService);
         }
+
+        #region GetDocInfo Tests
+
+        [TestMethod]
+        public void TrimmerService_GetDocInfo_HandlesNullRequestObject()
+        {
+            var expected = false;
+            var actual = _trimmerService.GetDocInfo(null).IsSuccessful;
+
+            var actualException = _trimmerService.GetDocInfo(null).TrimmerException;
+
+            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(actualException.GetType(), typeof(TrimmerRequestException));
+        }
+
+        #endregion
     }
 }
