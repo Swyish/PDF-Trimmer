@@ -1,0 +1,48 @@
+﻿@model PDFTrimmer.Services.DocInfoResponse
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@if (Model == null)
+{
+    Html.RenderPartial("_UploadFile");
+}
+else
+{
+    Html.RenderPartial("_Process", Model);
+    
+    @section scripts {
+        <script type="text/javascript" src="~/Scripts/pdf.js"></script>
+        <script type="text/javascript">
+            PDFJS.getDocument('/Data/sample-@Session.Contents["pdfSource"].ToString()').then(function (pdf) {
+
+                // Using promise to fetch the page
+                pdf.getPage(1).then(function (page) {
+                    var scale = 1;
+                    var viewport = page.getViewport(scale);
+
+                    //
+                    // Prepare canvas using PDF page dimensions
+                    //
+                    var canvas = document.getElementById('canvas');
+                    var context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    $("#overlay").height(viewport.height);
+                    $("#overlay").width(viewport.width);
+
+                    //
+                    // Render PDF page into canvas context
+                    //
+                    var renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+                    page.render(renderContext);
+                });
+            });
+    </script>
+    }
+}

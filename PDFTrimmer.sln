@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFTrimmer.WebUI", "PDFTrimmer.WebUI\PDFTrimmer.WebUI.csproj", "{B364724B-C09B-4207-8417-EE509DC65103}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFTrimmer.WebUI.Tests", "PDFTrimmer.WebUI.Tests\PDFTrimmer.WebUI.Tests.csproj", "{7CAE1C2C-5CFC-4A2B-8D07-B81C06C8FD72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFTrimmer.Services", "PDFTrimmer.Services\PDFTrimmer.Services.csproj", "{8D49A66A-91F0-4105-8616-4A3D310F0208}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B364724B-C09B-4207-8417-EE509DC65103}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B364724B-C09B-4207-8417-EE509DC65103}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B364724B-C09B-4207-8417-EE509DC65103}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B364724B-C09B-4207-8417-EE509DC65103}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CAE1C2C-5CFC-4A2B-8D07-B81C06C8FD72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CAE1C2C-5CFC-4A2B-8D07-B81C06C8FD72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CAE1C2C-5CFC-4A2B-8D07-B81C06C8FD72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CAE1C2C-5CFC-4A2B-8D07-B81C06C8FD72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D49A66A-91F0-4105-8616-4A3D310F0208}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D49A66A-91F0-4105-8616-4A3D310F0208}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D49A66A-91F0-4105-8616-4A3D310F0208}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D49A66A-91F0-4105-8616-4A3D310F0208}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
