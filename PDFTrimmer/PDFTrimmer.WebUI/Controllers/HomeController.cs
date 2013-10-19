@@ -83,10 +83,10 @@ namespace PDFTrimmer.WebUI.Controllers
         /// <returns>Modified pdf file</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Process(int llx, int lly, int urx, int ury)
+        public ActionResult Process(int marginLeft, int marginBottom, int marginRight, int marginTop)
         {
             // Handling invalid margins
-            if (llx < 0 || lly < 0 || urx < 0 || ury < 0)
+            if (marginLeft < 0 || marginBottom < 0 || marginRight < 0 || marginTop < 0)
             {
                 ViewBag.ErrorMessage = "Invalid margin values. Please try again.";
                 return View("Index");
@@ -95,10 +95,10 @@ namespace PDFTrimmer.WebUI.Controllers
             var response = _trimmerService.Trim(new TrimmerRequest()
             {
                 SourceFilePath = HostingEnvironment.MapPath("/Data/" + Session.Contents["pdfSource"]),
-                llx = llx,
-                lly = lly,
-                urx = urx,
-                ury = ury
+                llx = marginLeft,
+                lly = marginBottom,
+                urx = marginRight,
+                ury = marginTop
             });
 
             if (response.IsSuccessful)

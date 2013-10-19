@@ -2,19 +2,38 @@
 
 <h2>Process</h2>
 
-<div style="position: relative">
-    <canvas id="canvas" style="border: 1px solid black;"></canvas>
-    <canvas id="overlay" style="position: absolute; left: 0; top: 0; background-color: rgba(0, 0, 0, 0.2); border: 1px solid black;"></canvas>
-</div>
+
 
 @using (Html.BeginForm("Process", "Home", FormMethod.Post))
 {
     @Html.AntiForgeryToken();
-    <div>
-        <input type="number" name="llx" />
-        <input type="number" name="lly" />
-        <input type="number" name="urx" />
-        <input type="number" name="ury" />
-        <input type="submit" />
-    </div>
+
+    <table>
+        <tr>
+            <td colspan="3" style="text-align: center">
+                <input type="number" name="marginTop" id="marginTop" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="number" name="marginLeft" id="marginLeft" />
+            </td>
+            <td>
+                <div style="position: relative">
+                    <canvas id="canvas" style="border: 1px solid black;"></canvas>
+                    <canvas id="overlay" style="position: absolute; left: 0; top: 0; border: 1px solid black;"></canvas>
+                </div>
+            </td>
+            <td>
+                <input type="number" name="marginRight" id="marginRight" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" style="text-align: center">
+                <input type="number" name="marginBottom" id="marginBottom" />
+            </td>
+        </tr>
+    </table>
+    
+    <input type="submit" />
 }

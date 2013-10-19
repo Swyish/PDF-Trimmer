@@ -30,8 +30,8 @@ else
                     canvas.height = viewport.height;
                     canvas.width = viewport.width;
 
-                    $("#overlay").height(viewport.height);
-                    $("#overlay").width(viewport.width);
+                    $("#overlay").prop('height', $("#canvas").height());
+                    $("#overlay").prop('width', $("#canvas").width());
 
                     //
                     // Render PDF page into canvas context
@@ -43,6 +43,7 @@ else
                     page.render(renderContext);
                 });
             });
-    </script>
+        </script>
+        <script type="text/javascript" src="~/Scripts/canvas.drawer.js"></script>
     }
 }
