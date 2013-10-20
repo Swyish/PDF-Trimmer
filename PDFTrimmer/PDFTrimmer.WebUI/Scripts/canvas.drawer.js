@@ -2,71 +2,123 @@
     var mouseDown = false;
     var startX = 0;
     var startY = 0;
+    var endX = 0;
+    var endY = 0;
 
+    // On mouse click, set the start x, y position
     $("#overlay").mousedown(function (e) {
+
+        $("#process-submit").prop('disabled', false);
+        $("#marginLeft").prop('disabled', false);
+        $("#marginRight").prop('disabled', false);
+        $("#marginTop").prop('disabled', false);
+        $("#marginBottom").prop('disabled', false);
+
         mouseDown = true;
 
         var pos = findPos(this);
-        var x = e.pageX - pos.x;
-        var y = e.pageY - pos.y;
+        endX = e.pageX - pos.x;
+        endY = e.pageY - pos.y;
 
         var c = document.getElementById("overlay");
         var ctx = c.getContext("2d");
 
-        startX = x;
-        startY = y;
-
-        // ctx.rect(x, y, x, y);
-        // ctx.stroke();
-
-
+        startX = endX;
+        startY = endY;
     });
 
+    // On mouse move, draw the rectangle with start x, y, and mouse position
     $("#overlay").mousemove(function (e) {
         if (mouseDown) {
+
             var c = document.getElementById("overlay");
             var ctx = c.getContext("2d");
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             var pos = findPos(this);
-            var x = e.pageX - pos.x;
-            var y = e.pageY - pos.y;
+            endX = e.pageX - pos.x;
+            endY = e.pageY - pos.y;
 
             ctx.beginPath();
             ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
-            ctx.fillRect(startX, startY, x - startX, y - startY)
+            ctx.fillRect(startX, startY, endX - startX, endY - startY)
 
-            if (startY > y) {
+            if (startY > endY) {
                 // Handling starting from bototm left
-                $("#marginLeft").val(startX);
+
                 $("#marginBottom").val(canvas.height - startY);
-                $("#marginRight").val(canvas.width - x);
-                $("#marginTop").val(y);
+
+                $("#marginTop").val(endY);
             } else {
                 // Handling starting from bototm left
-                $("#marginLeft").val(startX);
-                $("#marginBottom").val(canvas.height - y);
-                $("#marginRight").val(canvas.width - x);
+                $("#marginBottom").val(canvas.height - endY);
                 $("#marginTop").val(startY);
+            }
+
+            if (startX > endX) {
+                $("#marginLeft").val(endX);
+                $("#marginRight").val(canvas.width - startX);
+
+            } else {
+                $("#marginLeft").val(startX);
+                $("#marginRight").val(canvas.width - endX);
             }
         }
     });
 
+    // On mouse up, ends drawing a rectangle
     $("#overlay").mouseup(function (e) {
         mouseDown = false;
-        startX = 0;
-        startY = 0;
-
-        //var pos = findPos(this);
-        //var x = e.pageX - pos.x;
-        //var y = e.pageY - pos.y;
-
-        //var c = document.getElementById("overlay");
-        //var ctx = c.getContext("2d");
-
-        //ctx.clearRect(0, 0, canvas.width, canvas.height);
     });
+
+    // handles manual changes to the margins
+    $("#marginLeft").change(function () {
+        if (startX > endX) {
+            endX = $("#marginLeft").val();
+        } else {
+            startX = $("#marginLeft").val();
+        }
+        redrawOverlay();
+    });
+
+    $("#marginBottom").change(function () {
+        if (endY > startY) {
+            endY = canvas.height - $("#marginBottom").val();
+        } else {
+            startY = canvas.height - $("#marginBottom").val();
+        }
+        redrawOverlay();
+    });
+
+    $("#marginRight").change(function () {
+        if (startX > endX) {
+            startX = canvas.width - $("#marginRight").val();
+        } else {
+            endX = canvas.width - $("#marginRight").val();
+        }
+        redrawOverlay();
+    });
+
+    $("#marginTop").change(function () {
+        if (endY > startY) {
+            startY = $("#marginTop").val();
+        } else {
+            endY = $("#marginTop").val();
+        }
+        redrawOverlay();
+    });
+
+    function redrawOverlay() {
+        var c = document.getElementById("overlay");
+        var ctx = c.getContext("2d");
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        ctx.beginPath();
+        ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+        ctx.fillRect(startX, startY, endX - startX, endY - startY)
+    }
 
     function findPos(obj) {
         var curleft = 0, curtop = 0;

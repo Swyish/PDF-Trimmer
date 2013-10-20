@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace PDFTrimmer.Services
 {
-    public class DocInfoResponse : ResponseBase
+    public class PrepareResponse : ResponseBase
     {
-        public byte[] SamplePages { get; set; }
+        public int PageCount { get; set; }
+        public byte[] PreparedDoc { get; set; }
     }
 }

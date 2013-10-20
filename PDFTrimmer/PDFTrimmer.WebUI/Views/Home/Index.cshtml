@@ -1,4 +1,4 @@
-﻿@model PDFTrimmer.Services.DocInfoResponse
+﻿@model PDFTrimmer.Services.PrepareResponse
 
 @{
     ViewBag.Title = "Index";
@@ -15,34 +15,101 @@ else
     @section scripts {
         <script type="text/javascript" src="~/Scripts/pdf.js"></script>
         <script type="text/javascript">
-            PDFJS.getDocument('/Data/sample-@Session.Contents["pdfSource"]').then(function (pdf) {
+            var first = true;
+            var fileLink = '/Data/@Session.Contents["pdfSource"]';
 
+            var pdfDoc = null,
+                pageNum = '@Model.PageCount' / 2,
+                scale = 1,
+                canvas = document.getElementById('canvas'),
+                ctx = canvas.getContext('2d');
+
+            //
+            // Get page info from document, resize canvas accordingly, and render page
+            //
+            function renderPage(num) {
                 // Using promise to fetch the page
-                pdf.getPage(1).then(function (page) {
-                    var scale = 1;
+                pdfDoc.getPage(num).then(function (page) {
                     var viewport = page.getViewport(scale);
-
-                    //
-                    // Prepare canvas using PDF page dimensions
-                    //
-                    var canvas = document.getElementById('canvas');
-                    var context = canvas.getContext('2d');
                     canvas.height = viewport.height;
                     canvas.width = viewport.width;
 
-                    $("#overlay").prop('height', $("#canvas").height());
-                    $("#overlay").prop('width', $("#canvas").width());
+                    if (first) {
+                        $("#overlay").prop('height', $("#canvas").height());
+                        $("#overlay").prop('width', $("#canvas").width());
+                        first = false;
+                    }
 
-                    //
                     // Render PDF page into canvas context
-                    //
                     var renderContext = {
-                        canvasContext: context,
+                        canvasContext: ctx,
                         viewport: viewport
                     };
                     page.render(renderContext);
                 });
+
+                // Update page counters
+                document.getElementById('page_num').textContent = pageNum;
+                document.getElementById('page_count').textContent = pdfDoc.numPages;
+            }
+
+            //
+            // Go to previous page
+            //
+            $("#previous-button").click(function () {
+                if (pageNum <= 1)
+                    return;
+                pageNum--;
+                renderPage(pageNum);
             });
+
+            //
+            // Go to next page
+            //
+            $("#next-button").click(function () {
+                if (pageNum >= pdfDoc.numPages)
+                    return;
+                pageNum++;
+                renderPage(pageNum);
+            });
+
+            //
+            // Asynchronously download PDF as an ArrayBuffer
+            //
+            PDFJS.getDocument(fileLink).then(function getPdfHelloWorld(_pdfDoc) {
+                pdfDoc = _pdfDoc;
+                renderPage(pageNum);
+            });
+
+
+            //PDFJS.getDocument(fileLink).then(function (pdf) {
+
+            //    // Using promise to fetch the page
+            //    pdf.getPage(startPage).then(function (page) {
+            //        //
+            //        // Prepare canvas using PDF page dimensions
+            //        //
+            //        var canvas = document.getElementById('canvas');
+            //        var context = canvas.getContext('2d')
+
+            //        var viewport = page.getViewport(1.0);
+
+            //        canvas.height = viewport.height;
+            //        canvas.width = viewport.width;
+
+            //        $("#overlay").prop('height', $("#canvas").height());
+            //        $("#overlay").prop('width', $("#canvas").width());
+
+            //        //
+            //        // Render PDF page into canvas context
+            //        //
+            //        var renderContext = {
+            //            canvasContext: context,
+            //            viewport: viewport
+            //        };
+            //        page.render(renderContext);
+            //    });
+            //});
         </script>
         <script type="text/javascript" src="~/Scripts/canvas.drawer.js"></script>
     }

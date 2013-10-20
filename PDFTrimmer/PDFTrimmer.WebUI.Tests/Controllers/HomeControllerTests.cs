@@ -47,12 +47,12 @@ namespace PDFTrimmer.WebUI.Tests.Controllers
         [TestMethod]
         public void HomeController_IndexPost_HandlesExceptionFromTrimmerService()
         {
-            var testResponse = new DocInfoResponse()
+            var testResponse = new PrepareResponse()
             {
                 IsSuccessful = false,
                 TrimmerException = new InvalidPDFException()
             };
-            _trimmerServiceMock.Setup(p => p.GetDocInfo(It.IsAny<DocInfoRequest>())).Returns(testResponse);
+            _trimmerServiceMock.Setup(p => p.Prepare(It.IsAny<PrepareRequest>())).Returns(testResponse);
 
             _homeController = new HomeController(_trimmerServiceMock.Object);
             _homeController.ControllerContext = new ControllerContext();

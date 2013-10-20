@@ -46,8 +46,8 @@
     <Compile Include="Concrete\PDFTrimmerService.cs" />
     <Compile Include="Exceptions\InvalidPDFException.cs" />
     <Compile Include="Exceptions\TrimmerRequestException.cs" />
-    <Compile Include="Models\DocInfoRequest.cs" />
-    <Compile Include="Models\DocInfoResponse.cs" />
+    <Compile Include="Models\PrepareRequest.cs" />
+    <Compile Include="Models\PrepareResponse.cs" />
     <Compile Include="Models\RequestBase.cs" />
     <Compile Include="Models\ResponseBase.cs" />
     <Compile Include="Exceptions\TrimmerException.cs" />

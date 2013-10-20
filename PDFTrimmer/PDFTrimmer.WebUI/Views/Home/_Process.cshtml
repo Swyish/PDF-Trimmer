@@ -1,4 +1,4 @@
-﻿@model PDFTrimmer.Services.DocInfoResponse
+﻿@model PDFTrimmer.Services.PrepareResponse
 
 <h2>Process</h2>
 
@@ -11,29 +11,31 @@
     <table>
         <tr>
             <td colspan="3" style="text-align: center">
-                <input type="number" name="marginTop" id="marginTop" />
+                <input type="number" name="marginTop" id="marginTop" disabled="disabled" />
             </td>
         </tr>
         <tr>
             <td>
-                <input type="number" name="marginLeft" id="marginLeft" />
+                <input type="button" id="previous-button" value="Previous" />
+                <input type="number" name="marginLeft" id="marginLeft" disabled="disabled" />
             </td>
             <td>
                 <div style="position: relative">
-                    <canvas id="canvas" style="border: 1px solid black;"></canvas>
-                    <canvas id="overlay" style="position: absolute; left: 0; top: 0; border: 1px solid black;"></canvas>
+                    <canvas id="canvas" style="border: 1px solid black;" width="600"></canvas>
+                    <canvas id="overlay" style="position: absolute; left: 0; top: 0; border: 1px solid black;" width="600"></canvas>
                 </div>
             </td>
             <td>
-                <input type="number" name="marginRight" id="marginRight" />
+                <input type="button" id="next-button" value="Next">
+                <input type="number" name="marginRight" id="marginRight" disabled="disabled" />
             </td>
         </tr>
         <tr>
             <td colspan="3" style="text-align: center">
-                <input type="number" name="marginBottom" id="marginBottom" />
+                <input type="number" name="marginBottom" id="marginBottom" disabled="disabled" />
             </td>
         </tr>
     </table>
     
-    <input type="submit" />
+    <input type="submit" disabled="disabled" id="process-submit" />
 }

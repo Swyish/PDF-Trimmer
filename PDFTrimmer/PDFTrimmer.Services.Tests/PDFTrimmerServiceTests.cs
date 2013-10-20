@@ -27,9 +27,9 @@ namespace PDF_Trimmer.Services.Tests
         public void TrimmerService_GetDocInfo_HandlesNullRequestObject()
         {
             var expected = false;
-            var actual = _trimmerService.GetDocInfo(null).IsSuccessful;
+            var actual = _trimmerService.Prepare(null).IsSuccessful;
 
-            var actualException = _trimmerService.GetDocInfo(null).TrimmerException;
+            var actualException = _trimmerService.Prepare(null).TrimmerException;
 
             Assert.AreEqual(expected, actual);
             Assert.AreEqual(actualException.GetType(), typeof(TrimmerRequestException));

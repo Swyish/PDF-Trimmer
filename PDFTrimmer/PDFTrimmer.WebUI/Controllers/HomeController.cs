@@ -44,33 +44,28 @@ namespace PDFTrimmer.WebUI.Controllers
                 return View();
             }
 
-            // Create a unique name for the uploaded file
-            var tempFileName = Guid.NewGuid() + ".pdf";
-            // Set a temp file path for the uploaded file
-            var tempFilePath = HostingEnvironment.MapPath("/Data/" + tempFileName);
-
-            // Save the uploaded file to a temp location
-            pdfSource.SaveAs(tempFilePath);
-            // Save the file name to the session for the future reference
+            var buffer = new byte[pdfSource.InputStream.Length];
+            pdfSource.InputStream.Read(buffer, 0, (int)pdfSource.InputStream.Length);
             
+            var tempFileName = Guid.NewGuid() + ".pdf";
             Session.Contents["pdfSource"] = tempFileName;
            
-            var DocInfoResponse = _trimmerService.GetDocInfo(new DocInfoRequest()
+            var prepareResponse = _trimmerService.Prepare(new PrepareRequest()
             {
-                SourceFilePath = tempFilePath
+                SourceFile = buffer
             });
 
             // Handle failed trims
-            if (!DocInfoResponse.IsSuccessful)
+            if (!prepareResponse.IsSuccessful)
             {
-                ViewBag.ErrorMessage = DocInfoResponse.TrimmerException.Message;
+                ViewBag.ErrorMessage = prepareResponse.TrimmerException.Message;
                 return View();
             }
 
             // If trim is successful, write the file to the server, so it can be opened in the view.
-            System.IO.File.WriteAllBytes(HostingEnvironment.MapPath("/Data/sample-" + tempFileName), DocInfoResponse.SamplePages);
+            System.IO.File.WriteAllBytes(HostingEnvironment.MapPath("/Data/" + tempFileName), prepareResponse.PreparedDoc);
 
-            return View(DocInfoResponse);
+            return View(prepareResponse);
         }
 
         /// <summary>
@@ -92,19 +87,20 @@ namespace PDFTrimmer.WebUI.Controllers
                 return View("Index");
             }
 
+            var pdfFile = System.IO.File.ReadAllBytes(HostingEnvironment.MapPath("/Data/" + Session.Contents["pdfSource"]));
+
             var response = _trimmerService.Trim(new TrimmerRequest()
             {
-                SourceFilePath = HostingEnvironment.MapPath("/Data/" + Session.Contents["pdfSource"]),
-                llx = marginLeft,
-                lly = marginBottom,
-                urx = marginRight,
-                ury = marginTop
+                SourceFile = pdfFile,
+                MarginLeft = marginLeft,
+                MarginBottom = marginBottom,
+                MarginRight = marginRight,
+                MarginTop = marginTop 
             });
 
             if (response.IsSuccessful)
             {
                 System.IO.File.Delete(HostingEnvironment.MapPath("/Data/" + Session.Contents["pdfSource"].ToString()));
-                System.IO.File.Delete(HostingEnvironment.MapPath("/Data/sample-" + Session.Contents["pdfSource"].ToString()));
                 Session.Contents["pdfSource"] = null;
 
                 MemoryStream ms = new MemoryStream(response.OutputFile);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PDFTrimmer.Services
 {
-    public class DocInfoRequest : RequestBase
+    public class PrepareRequest : RequestBase
     {
     }
 }

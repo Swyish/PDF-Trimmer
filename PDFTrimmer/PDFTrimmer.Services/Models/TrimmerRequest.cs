@@ -8,9 +8,9 @@ namespace PDFTrimmer.Services
 {
     public class TrimmerRequest : RequestBase
     {
-        public int llx { get; set; }
-        public int lly { get; set; }
-        public int urx { get; set; }
-        public int ury { get; set; }
+        public int MarginLeft { get; set; }
+        public int MarginBottom { get; set; }
+        public int MarginRight { get; set; }
+        public int MarginTop { get; set; }
     }
 }

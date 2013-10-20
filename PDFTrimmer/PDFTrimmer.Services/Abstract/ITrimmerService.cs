@@ -8,7 +8,7 @@ namespace PDFTrimmer.Services
 {
     public interface ITrimmerService
     {
-        DocInfoResponse GetDocInfo(DocInfoRequest request);
+        PrepareResponse Prepare(PrepareRequest request);
         TrimmerResponse Trim(TrimmerRequest request);
     }
 }
