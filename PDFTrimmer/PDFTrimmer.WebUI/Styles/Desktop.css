@@ -1,17 +1,118 @@
-﻿header {
-    width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
+﻿* {
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    font-family: "open sans";
 }
 
-.body {
-    width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
+.clear {
+    clear: both;
 }
 
-footer {
-    width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
+body {
+    width: 100%;
+    background-color: whitesmoke;
 }
+
+    body .main-header {
+        width: 100%;
+        background-color: white;
+    }
+
+        body .main-header .main-header-content {
+            width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+            body .main-header .main-header-content img {
+                padding-top: 10px;
+                padding-bottom: 5px;
+                float: left;
+                display: block;
+            }
+
+            body .main-header .main-header-content nav {
+                padding-top: 12px;
+                float: right;
+            }
+
+                body .main-header .main-header-content nav a {
+                    color: rgb(60, 60, 60);
+                    text-decoration: none;
+                }
+
+                body .main-header .main-header-content nav div {
+                    display: inline-block;
+                    margin-left: 40px;
+                    color: rgb(60, 60, 60);
+                    font-size: 14px;
+                }
+
+    body .sub-header {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        width: 100%;
+        background-color: rgb(66, 139, 202);
+    }
+
+        body .sub-header .sub-header-contents {
+            width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+            body .sub-header .sub-header-contents .description {
+                float: left;
+                color: white;
+                padding-top: 30px;
+                font-size: 20px;
+            }
+
+            body .sub-header .sub-header-contents .description-two {
+                float: left;
+                color: white;
+                font-size: 20px;
+            }
+
+                body .sub-header .sub-header-contents .description-two h2 {
+                    color: orange;
+                }
+
+            body .sub-header .sub-header-contents .example-image {
+                float: right;
+            }
+
+    body .instruction {
+        background-color: rgb(91, 192, 222);
+    }
+
+    body .contents {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+        body .contents table {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        body .contents .text-box {
+            border: 1px solid black;
+            padding: 5px;
+            width: 60px;
+        }
+
+        body .contents .input-box {
+            display: inline-block;
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            background-color: orange;
+            color: white;
+            cursor: pointer;
+        }

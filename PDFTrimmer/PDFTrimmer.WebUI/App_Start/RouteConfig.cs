@@ -14,6 +14,18 @@ namespace PDFTrimmer.WebUI
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "ThankYou",
+                url: "thankyou",
+                defaults: new { controller = "Home", action = "thankyou", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                name: "Process",
+                url: "process",
+                defaults: new { controller = "Home", action = "process", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

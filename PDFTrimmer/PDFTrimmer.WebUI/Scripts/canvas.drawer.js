@@ -109,6 +109,12 @@
         redrawOverlay();
     });
 
+    $("#process-submit").click(function () {
+        setTimeout(function () {
+            window.location.href = "/thankyou";
+        }, 5000);
+    });
+
     function redrawOverlay() {
         var c = document.getElementById("overlay");
         var ctx = c.getContext("2d");

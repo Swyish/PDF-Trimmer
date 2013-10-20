@@ -1,23 +1,31 @@
 ﻿@model PDFTrimmer.Services.PrepareResponse
 
-<h2>Process</h2>
+<h2>Step 2. Set the Margins</h2><br />
+<p>
+    Drag and drop directly on the document to select the area you would like to be on your new document.<br />
+    Make sure to flip through few pages to make sure your rectangle fits all the area you want.<br />
+    <br />
+    You can also adjust margins by using the text boxes.
+</p>
+<br />
+<p>
+    Note: If your PDF document has different sized pages, the margins shown on the below sample document might look bigger.
+</p>
+<br />
 
-
-
-@using (Html.BeginForm("Process", "Home", FormMethod.Post))
+@using (Html.BeginForm("Process", "Home", FormMethod.Post, new { id="margin-form" }))
 {
     @Html.AntiForgeryToken();
 
     <table>
         <tr>
             <td colspan="3" style="text-align: center">
-                <input type="number" name="marginTop" id="marginTop" disabled="disabled" />
+                <input type="number" name="marginTop" id="marginTop" disabled="disabled" class="text-box" />
             </td>
         </tr>
         <tr>
-            <td>
-                <input type="button" id="previous-button" value="Previous" />
-                <input type="number" name="marginLeft" id="marginLeft" disabled="disabled" />
+            <td style="text-align: right">
+                <input type="number" name="marginLeft" id="marginLeft" disabled="disabled" class="text-box" />
             </td>
             <td>
                 <div style="position: relative">
@@ -26,16 +34,21 @@
                 </div>
             </td>
             <td>
-                <input type="button" id="next-button" value="Next">
-                <input type="number" name="marginRight" id="marginRight" disabled="disabled" />
+
+                <input type="number" name="marginRight" id="marginRight" disabled="disabled" class="text-box" />
             </td>
         </tr>
         <tr>
             <td colspan="3" style="text-align: center">
-                <input type="number" name="marginBottom" id="marginBottom" disabled="disabled" />
+                <input type="number" name="marginBottom" id="marginBottom" disabled="disabled" class="text-box" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" style="text-align: center">
+                <input type="button" id="previous-button" value="Previous Page" class="input-box" />
+                <input type="submit" disabled="disabled" id="process-submit" class="input-box" value="GET YOUR DOCUMENT!" />
+                <input type="button" id="next-button" value="Next Page" class="input-box">
             </td>
         </tr>
     </table>
-    
-    <input type="submit" disabled="disabled" id="process-submit" />
 }

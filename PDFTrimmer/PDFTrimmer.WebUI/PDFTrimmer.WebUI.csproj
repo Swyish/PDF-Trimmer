@@ -130,6 +130,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="Global.asax" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
+    <Content Include="Images\example.png" />
+    <Content Include="Images\Logo-Small.png" />
     <Content Include="Scripts\canvas.drawer.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
     <Content Include="Scripts\jquery-2.0.3.min.js" />
@@ -149,6 +151,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\_UploadFile.cshtml" />
     <Content Include="Views\Home\_Process.cshtml" />
+    <Content Include="Views\Home\ThankYou.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

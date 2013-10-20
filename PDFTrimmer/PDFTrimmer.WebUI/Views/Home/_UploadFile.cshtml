@@ -2,8 +2,9 @@
     ViewBag.Title = "Please Upload a pdf file";
 }
 
-<h2>Index</h2>
-
+<h2>Step 1. Upload Your PDF Documents
+</h2>
+<br />
 @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken();
@@ -11,7 +12,6 @@
         <input type="file" name="pdfSource" />
     </div>
     <div>
-        <input type="submit" id="upload-pdf" />
+        <input type="submit" id="upload-pdf" class="input-box" />
     </div>
 }
-

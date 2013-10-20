@@ -4,20 +4,45 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
     <script src="~/Scripts/jquery-2.0.3.js"></script>
-     <link media="Screen" href="/Styles/Desktop.css" type="text/css" rel="stylesheet" />
+    <link media="Screen" href="/Styles/Desktop.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
-    <header>
-
+    <header class="main-header">
+        <div class="main-header-content">
+            <a href="/">
+                <img src="~/Images/Logo-Small.png" />
+            </a>
+            <nav>
+                <div>
+                    about
+                </div>
+                <div>
+                    <a href="http://www.namedquery.com/type/pdf-trimmer">blog
+                    </a>
+                </div>
+                <div>
+                    <a href="https://github.com/Swyish/PDF-Trimmer">source code
+                    </a>
+                </div>
+                <div>
+                    <a href="/privacy">privacy policy
+                    </a>
+                </div>
+                <div>
+                    <a href="/help">help
+                    </a>
+                </div>
+            </nav>
+            <div class="clear"></div>
+        </div>
     </header>
-
-    <div class="body">
+    @RenderSection("feature", false)
+    <div class="contents">
         @RenderBody()
     </div>
-
     <footer>
-
     </footer>
 
     @RenderSection("scripts", false)

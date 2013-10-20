@@ -117,5 +117,10 @@ namespace PDFTrimmer.WebUI.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        public ActionResult ThankYou()
+        {
+            return View();
+        }
     }
 }

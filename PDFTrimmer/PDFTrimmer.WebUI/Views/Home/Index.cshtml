@@ -5,7 +5,34 @@
 }
 
 @if (Model == null)
-{
+{   
+    @section feature {
+        <div class="sub-header">
+            <div class="sub-header-contents">
+                <div class="description">
+                    Do you read PDF documents on your mobile phone?<br />
+                    Ever wished you could get rid of the margins for better readability?<br />
+                    <br />
+                </div>
+
+                <div class="example-image">
+                    <img src="~/Images/example.png">
+                </div>
+                <div class="description-two">
+                    <h2>THIS APP IS FOR YOU!</h2>
+                    <br />
+                    - Remove margins in ONE simple steps<br />
+                    - You set which parts to keep<br />
+                    - No installations or plugins required<br />
+                    - No registration required<br />
+                    - No user information collected<br />
+                    - Completely FREE
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    } 
+    
     Html.RenderPartial("_UploadFile");
 }
 else
@@ -80,36 +107,6 @@ else
                 pdfDoc = _pdfDoc;
                 renderPage(pageNum);
             });
-
-
-            //PDFJS.getDocument(fileLink).then(function (pdf) {
-
-            //    // Using promise to fetch the page
-            //    pdf.getPage(startPage).then(function (page) {
-            //        //
-            //        // Prepare canvas using PDF page dimensions
-            //        //
-            //        var canvas = document.getElementById('canvas');
-            //        var context = canvas.getContext('2d')
-
-            //        var viewport = page.getViewport(1.0);
-
-            //        canvas.height = viewport.height;
-            //        canvas.width = viewport.width;
-
-            //        $("#overlay").prop('height', $("#canvas").height());
-            //        $("#overlay").prop('width', $("#canvas").width());
-
-            //        //
-            //        // Render PDF page into canvas context
-            //        //
-            //        var renderContext = {
-            //            canvasContext: context,
-            //            viewport: viewport
-            //        };
-            //        page.render(renderContext);
-            //    });
-            //});
         </script>
         <script type="text/javascript" src="~/Scripts/canvas.drawer.js"></script>
     }
