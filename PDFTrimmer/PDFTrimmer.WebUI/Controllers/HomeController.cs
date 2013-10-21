@@ -29,9 +29,9 @@ namespace PDFTrimmer.WebUI.Controllers
         }
 
         /// <summary>
-        /// Handles the uploaded source pdf file
+        /// Handles uploaded PDF file
         /// </summary>
-        /// <param name="pdfSource">the source PDF file that would be processed</param>
+        /// <param name="pdfSource"></param>
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -44,15 +44,18 @@ namespace PDFTrimmer.WebUI.Controllers
                 return View();
             }
 
-            var buffer = new byte[pdfSource.InputStream.Length];
-            pdfSource.InputStream.Read(buffer, 0, (int)pdfSource.InputStream.Length);
-            
             var tempFileName = Guid.NewGuid() + ".pdf";
-            Session.Contents["pdfSource"] = tempFileName;
-           
+            var baseFilePath = HostingEnvironment.MapPath("/Data/");
+
+            Session.Contents["originalName"] = pdfSource.FileName.Split('.')[0];
+            Session.Contents["sourceFileName"] = tempFileName;
+
+            pdfSource.SaveAs(baseFilePath + tempFileName);
+
             var prepareResponse = _trimmerService.Prepare(new PrepareRequest()
             {
-                SourceFile = buffer
+                BaseFilePath = baseFilePath,
+                SourceFileName = tempFileName
             });
 
             // Handle failed trims
@@ -62,50 +65,55 @@ namespace PDFTrimmer.WebUI.Controllers
                 return View();
             }
 
-            // If trim is successful, write the file to the server, so it can be opened in the view.
-            System.IO.File.WriteAllBytes(HostingEnvironment.MapPath("/Data/" + tempFileName), prepareResponse.PreparedDoc);
-
             return View(prepareResponse);
         }
 
         /// <summary>
-        /// Receive the margins from the user and apply to the pdf
+        /// 
         /// </summary>
-        /// <param name="llx">lower left x</param>
-        /// <param name="lly">lower left y</param>
-        /// <param name="urx">upper right x</param>
-        /// <param name="ury">upper right y</param>
-        /// <returns>Modified pdf file</returns>
+        /// <returns></returns>
+        public ActionResult Process()
+        {
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Process(int marginLeft, int marginBottom, int marginRight, int marginTop)
         {
+            if (Session.Contents["sourceFileName"] == null)
+            {
+                return RedirectToAction("Index");
+            }
+
             // Handling invalid margins
             if (marginLeft < 0 || marginBottom < 0 || marginRight < 0 || marginTop < 0)
             {
                 ViewBag.ErrorMessage = "Invalid margin values. Please try again.";
-                return View("Index");
+                return RedirectToAction("Index");
             }
-
-            var pdfFile = System.IO.File.ReadAllBytes(HostingEnvironment.MapPath("/Data/" + Session.Contents["pdfSource"]));
 
             var response = _trimmerService.Trim(new TrimmerRequest()
             {
-                SourceFile = pdfFile,
+                BaseFilePath = HostingEnvironment.MapPath("/Data/"),
+                SourceFileName = Session.Contents["sourceFileName"].ToString(),
                 MarginLeft = marginLeft,
                 MarginBottom = marginBottom,
                 MarginRight = marginRight,
-                MarginTop = marginTop 
+                MarginTop = marginTop
             });
 
             if (response.IsSuccessful)
             {
-                System.IO.File.Delete(HostingEnvironment.MapPath("/Data/" + Session.Contents["pdfSource"].ToString()));
-                Session.Contents["pdfSource"] = null;
+                System.IO.File.Delete(HostingEnvironment.MapPath("/Data/" + Session.Contents["sourceFileName"].ToString()));
+                System.IO.File.Delete(HostingEnvironment.MapPath("/Data/prepared-" + Session.Contents["sourceFileName"].ToString()));
+                System.IO.File.Delete(HostingEnvironment.MapPath("/Data/sample-" + Session.Contents["sourceFileName"].ToString()));
+                Session.Contents["sourceFileName"] = null;
 
                 MemoryStream ms = new MemoryStream(response.OutputFile);
                 Response.ContentType = "application/pdf";
-                Response.AddHeader("content-disposition", "attachment;filename=NamedQuery.pdf");
+                Response.AddHeader("content-disposition", "attachment;filename=" + Session.Contents["originalName"] + ".pdf");
+                Session.Contents["originalName"] = null;
                 Response.Buffer = true;
                 ms.WriteTo(Response.OutputStream);
                 Response.End();
@@ -114,7 +122,7 @@ namespace PDFTrimmer.WebUI.Controllers
             }
             else
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Process");
             }
         }
 

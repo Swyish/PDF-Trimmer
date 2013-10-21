@@ -9,6 +9,5 @@ namespace PDFTrimmer.Services
     public class PrepareResponse : ResponseBase
     {
         public int PageCount { get; set; }
-        public byte[] PreparedDoc { get; set; }
     }
 }

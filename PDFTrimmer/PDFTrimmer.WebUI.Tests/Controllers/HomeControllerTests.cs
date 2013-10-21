@@ -69,14 +69,14 @@ namespace PDFTrimmer.WebUI.Tests.Controllers
 
         #endregion
 
-        [TestMethod]
-        public void HomeController_Process_HandlesInvalidArguments()
-        {
-            var expected = "Invalid margin values. Please try again.";
-            var actual = ((ViewResult)_homeController.Process(-1, -1, -1, -1)).ViewBag.ErrorMessage;
+        //[TestMethod]
+        //public void HomeController_Process_HandlesInvalidArguments()
+        //{
+        //    var expected = "Invalid margin values. Please try again.";
+        //    var actual = ((ViewResult)_homeController.Process(-1, -1, -1, -1)).ViewBag.ErrorMessage;
 
-            Assert.AreEqual(expected, actual);
-        }
+        //    Assert.AreEqual(expected, actual);
+        //}
 
         #region Process Method Tests
 

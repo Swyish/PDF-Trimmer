@@ -112,7 +112,7 @@
     $("#process-submit").click(function () {
         setTimeout(function () {
             window.location.href = "/thankyou";
-        }, 5000);
+        }, 10000);
     });
 
     function redrawOverlay() {

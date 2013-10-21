@@ -34,7 +34,7 @@ namespace PDFTrimmer.Services
             PdfReader.unethicalreading = true;
 
             // Read the uploaded document
-            using (PdfReader pdfReader = new PdfReader(request.SourceFile))
+            using (PdfReader pdfReader = new PdfReader(request.BaseFilePath + request.SourceFileName))
             {
                 int maxWidth = 0;
                 int maxHeight = 0;
@@ -56,13 +56,13 @@ namespace PDFTrimmer.Services
                     }
                 }
 
-                using (var output = new MemoryStream())
+                // Get Prepared output file
+                using (var output = new FileStream(request.BaseFilePath + "prepared-" + request.SourceFileName, FileMode.CreateNew, FileAccess.Write))
                 {
                     Document doc = new Document(new Rectangle(maxWidth, maxHeight, 0));
                     PdfSmartCopy smartCopy = new PdfSmartCopy(doc, output);
 
                     doc.Open();
-                    PdfContentByte contentByte = smartCopy.DirectContent;
                     PdfRectangle rect = new PdfRectangle(doc.PageSize);
 
                     // Loop through all pages of the source document
@@ -81,9 +81,43 @@ namespace PDFTrimmer.Services
 
                     // Close the output document
                     doc.Close();
-                    response.PreparedDoc = output.GetBuffer();
+                }
+
+
+                if (pdfReader.NumberOfPages > 10)
+                {
+                    // Create sample file
+                    using (var output = new FileStream(request.BaseFilePath + "sample-" + request.SourceFileName, FileMode.CreateNew, FileAccess.Write))
+                    {
+                        Document doc = new Document(new Rectangle(maxWidth, maxHeight, 0));
+                        PdfSmartCopy smartCopy = new PdfSmartCopy(doc, output);
+
+                        doc.Open();
+                        PdfRectangle rect = new PdfRectangle(doc.PageSize);
+
+                        var totalPages = pdfReader.NumberOfPages;
+                        var endPage = pdfReader.NumberOfPages / 2 + 3;
+                        var startPage = pdfReader.NumberOfPages / 2 - 3;
+
+                        for (int i = startPage; i <= endPage; i++)
+                        {
+                            // Get a page
+                            var page = pdfReader.GetPageN(i);
+
+                            page.Put(PdfName.CROPBOX, rect);
+                            page.Put(PdfName.MEDIABOX, rect);
+
+                            // Copy the content and insert into the new document
+                            var copiedPage = smartCopy.GetImportedPage(pdfReader, i);
+                            smartCopy.AddPage(copiedPage);
+                        }
+
+                        // Close the output document
+                        doc.Close();
+                    }
                 }
             }
+
             response.IsSuccessful = true;
 
             return response;
@@ -100,7 +134,7 @@ namespace PDFTrimmer.Services
 
             TrimmerResponse response = new TrimmerResponse();
 
-            using (var pdfReader = new PdfReader(request.SourceFile))
+            using (var pdfReader = new PdfReader(request.BaseFilePath + "prepared-" + request.SourceFileName))
             {
                 PdfRectangle rect = new PdfRectangle(request.MarginLeft, request.MarginBottom,
                     pdfReader.GetPageSizeWithRotation(1).Width - request.MarginRight, pdfReader.GetPageSizeWithRotation(1).Height - request.MarginTop);

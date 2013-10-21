@@ -50,7 +50,6 @@ body {
                 }
 
     body .sub-header {
-        padding-top: 20px;
         padding-bottom: 20px;
         width: 100%;
         background-color: rgb(66, 139, 202);
@@ -62,10 +61,18 @@ body {
             margin-right: auto;
         }
 
+            body .sub-header .sub-header-contents h1 {
+                color: white;
+                font-size: 80px;
+            }
+
+            body .sub-header .sub-header-contents .highlight {
+                color: orange;
+            }
+
             body .sub-header .sub-header-contents .description {
                 float: left;
                 color: white;
-                padding-top: 30px;
                 font-size: 20px;
             }
 
@@ -95,18 +102,48 @@ body {
         margin-right: auto;
     }
 
-        body .contents table {
+        body .contents .fileupload-container {
+            width: 100px;
+            height: 30px;
+            position: relative;
+            overflow: hidden;
+            background-color: orange;
+            color: white;
+            text-align: center;
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+            body .contents .fileupload-container input {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100px;
+                height: 30px;
+                opacity: 0.0;
+            }
+
+        body .contents .note {
+            font-style: italic;
+        }
+
+    body .process-form {
+    }
+
+        body .process-form table {
             margin-left: auto;
             margin-right: auto;
         }
 
-        body .contents .text-box {
+        body .process-form .text-box {
             border: 1px solid black;
             padding: 5px;
             width: 60px;
         }
 
-        body .contents .input-box {
+        body .process-form .input-box {
             display: inline-block;
             padding-left: 10px;
             padding-right: 10px;
@@ -116,3 +153,46 @@ body {
             color: white;
             cursor: pointer;
         }
+
+.bar {
+    height: 18px;
+    background: green;
+}
+
+.overlay {
+    background-color: #000;
+    opacity: .7;
+    filter: alpha(opacity=70);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9998;
+}
+
+.overlay-info {
+    position: absolute;
+    background-color: white;
+    opacity: 1.0;
+    height: auto;
+    z-index: 9999;
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+}
+
+.overlay-status {
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+.loading-image {
+    width: 64px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

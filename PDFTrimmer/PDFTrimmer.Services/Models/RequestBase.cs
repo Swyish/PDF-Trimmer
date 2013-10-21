@@ -8,6 +8,7 @@ namespace PDFTrimmer.Services
 {
     public abstract class RequestBase
     {
-        public byte[] SourceFile { get; set; }
+        public string BaseFilePath { get; set; }
+        public string SourceFileName { get; set; }
     }
 }

@@ -4,110 +4,52 @@
     ViewBag.Title = "Index";
 }
 
-@if (Model == null)
-{   
-    @section feature {
-        <div class="sub-header">
-            <div class="sub-header-contents">
-                <div class="description">
-                    Do you read PDF documents on your mobile phone?<br />
-                    Ever wished you could get rid of the margins for better readability?<br />
-                    <br />
-                </div>
-
-                <div class="example-image">
-                    <img src="~/Images/example.png">
-                </div>
-                <div class="description-two">
-                    <h2>THIS APP IS FOR YOU!</h2>
-                    <br />
-                    - Remove margins in ONE simple steps<br />
-                    - You set which parts to keep<br />
-                    - No installations or plugins required<br />
-                    - No registration required<br />
-                    - No user information collected<br />
-                    - Completely FREE
-                </div>
+@section feature {
+    <div class="sub-header">
+        <div class="sub-header-contents">
+            <h1>PDF Trimmer</h1>
+            <div class="description">
+                Do you read PDF documents on your mobile phone?<br />
+                Ever wished you could get rid of the margins for better readability?<br />
+                <br />
             </div>
-            <div class="clear"></div>
+
+            <div class="example-image">
+                <img src="~/Images/example.png">
+            </div>
+            <div class="description-two">
+                <h2>THIS FREE APP IS FOR U!</h2>
+                <br />
+                - Remove margins in <span class="highlight">TWO</span> simple steps<br />
+                - You set which parts to keep<br />
+                - No installations or plugins required<br />
+                - No registration required<br />
+                - No user information collected<br />
+                - Completely <span class="highlight">FREE</span>
+            </div>
         </div>
-    } 
-    
-    Html.RenderPartial("_UploadFile");
+        <div class="clear"></div>
+    </div>
 }
-else
+
+<h2>Step 1. Let's Start with Your PDF Document.</h2>
+<p>
+    Click the button below to upload a PDF document from your computer.
+</p>
+<br />
+
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    Html.RenderPartial("_Process", Model);
-    
-    @section scripts {
-        <script type="text/javascript" src="~/Scripts/pdf.js"></script>
-        <script type="text/javascript">
-            var first = true;
-            var fileLink = '/Data/@Session.Contents["pdfSource"]';
+    @Html.AntiForgeryToken();
+    <span class="fileupload-container">
+        <span>Upload File</span>
+        <input type="file" name="pdfSource" id="fileupload" />
+    </span>
+}
 
-            var pdfDoc = null,
-                pageNum = '@Model.PageCount' / 2,
-                scale = 1,
-                canvas = document.getElementById('canvas'),
-                ctx = canvas.getContext('2d');
-
-            //
-            // Get page info from document, resize canvas accordingly, and render page
-            //
-            function renderPage(num) {
-                // Using promise to fetch the page
-                pdfDoc.getPage(num).then(function (page) {
-                    var viewport = page.getViewport(scale);
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
-
-                    if (first) {
-                        $("#overlay").prop('height', $("#canvas").height());
-                        $("#overlay").prop('width', $("#canvas").width());
-                        first = false;
-                    }
-
-                    // Render PDF page into canvas context
-                    var renderContext = {
-                        canvasContext: ctx,
-                        viewport: viewport
-                    };
-                    page.render(renderContext);
-                });
-
-                // Update page counters
-                document.getElementById('page_num').textContent = pageNum;
-                document.getElementById('page_count').textContent = pdfDoc.numPages;
-            }
-
-            //
-            // Go to previous page
-            //
-            $("#previous-button").click(function () {
-                if (pageNum <= 1)
-                    return;
-                pageNum--;
-                renderPage(pageNum);
-            });
-
-            //
-            // Go to next page
-            //
-            $("#next-button").click(function () {
-                if (pageNum >= pdfDoc.numPages)
-                    return;
-                pageNum++;
-                renderPage(pageNum);
-            });
-
-            //
-            // Asynchronously download PDF as an ArrayBuffer
-            //
-            PDFJS.getDocument(fileLink).then(function getPdfHelloWorld(_pdfDoc) {
-                pdfDoc = _pdfDoc;
-                renderPage(pageNum);
-            });
-        </script>
-        <script type="text/javascript" src="~/Scripts/canvas.drawer.js"></script>
-    }
+@section scripts {
+    <script src="~/Scripts/jquery.ui.widget.js"></script>
+    <script src="~/Scripts/jquery.fileupload.js"></script>
+    <script src="~/Scripts/jquery.iframe-transport.js"></script>
+    <script src="~/Scripts/file.upload.handler.js"></script>
 }
