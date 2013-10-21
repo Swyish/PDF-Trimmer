@@ -38,7 +38,7 @@
 </p>
 <br />
 
-@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data", id="upload-form" }))
 {
     @Html.AntiForgeryToken();
     <span class="fileupload-container">

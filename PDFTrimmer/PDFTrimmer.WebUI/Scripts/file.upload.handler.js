@@ -11,6 +11,17 @@ jQuery.fn.center = function () {
 
 // Handles the file upload
 $('#fileupload').fileupload({
+    add: function (e, data) {
+        var goUpload = true;
+        var uploadFile = data.files[0];
+        if (!(/\.(pdf)$/i).test(uploadFile.name)) {
+            alert("Invalid file type. Only PDF files are accepted!");
+            goUpload = false;
+        }
+        if (goUpload == true) {
+            data.submit();
+        }
+    },
     type: 'post',
     dataType: 'text',
     done: function () {
@@ -48,6 +59,7 @@ $('#fileupload').fileupload({
                '<img src="/images/loading.gif" />' +
            '</div></div>').appendTo(".overlay-info");
 
+            // Putting the overlay in the center of the screen again, since the size of overlay has been changed.
             $(".overlay-info").center();
         }
     }
