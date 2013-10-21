@@ -61,7 +61,21 @@
     <script type="text/javascript" src="~/Scripts/jquery-ui-1.10.3.min.js"></script>
     <script type="text/javascript" src="~/Scripts/pdf.js"></script>
     <script type="text/javascript">
-        var fileLink = '/data/sample-@Session.Contents["sourceFileName"]';
+
+        function urlExists(url) {
+            var http = new XMLHttpRequest();
+            http.open('HEAD', url, false);
+            http.send();
+            return http.status!=404;
+        }
+
+        var fileLink = "";
+
+        if (urlExists('/data/sample-@Session.Contents["sourceFileName"]')) {
+            fileLink = '/data/sample-@Session.Contents["sourceFileName"]';
+        } else {
+            fileLink = '/data/prepared-@Session.Contents["sourceFileName"]';
+        }
     </script>
     <script type="text/javascript" src="~/Scripts/pdf.handler.js"></script>
     <script type="text/javascript" src="~/Scripts/canvas.drawer.js"></script>
