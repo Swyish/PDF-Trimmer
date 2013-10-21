@@ -35,13 +35,18 @@ namespace PDFTrimmer.WebUI.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(HttpPostedFileBase pdfSource)
+        public JsonResult Index(HttpPostedFileBase pdfSource)
         {
             // Validate the uploaded file
             if (pdfSource == null || pdfSource.ContentType != "application/pdf")
             {
                 ViewBag.ErrorMessage = "Oops. Something went wrong. Please upload a pdf file again.";
-                return View();
+                return Json(new
+                   {
+                       statusCode = 500,
+                       status = "Error uploading image.",
+                       file = string.Empty
+                   }, "text/html");
             }
 
             var tempFileName = Guid.NewGuid() + ".pdf";
@@ -62,10 +67,20 @@ namespace PDFTrimmer.WebUI.Controllers
             if (!prepareResponse.IsSuccessful)
             {
                 ViewBag.ErrorMessage = prepareResponse.TrimmerException.Message;
-                return View();
+                return Json(new
+                {
+                    statusCode = 500,
+                    status = "Error uploading image.",
+                    file = string.Empty
+                }, "text/html");
             }
 
-            return View(prepareResponse);
+            return Json(new
+            {
+                statusCode = 200,
+                status = "Image uploaded.",
+                file = Session.Contents["originalName"].ToString(),
+            }, "text/html");
         }
 
         /// <summary>

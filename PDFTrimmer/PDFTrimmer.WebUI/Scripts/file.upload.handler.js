@@ -23,10 +23,13 @@ $('#fileupload').fileupload({
         }
     },
     type: 'post',
-    dataType: 'text',
-    done: function () {
-        // When done, redirect to the Process page
-        window.location.href = "/Process";
+    done: function (e, data) {
+        var jsonArray = JSON.parse(data.result);
+        if (jsonArray["statusCode"] == 200) {
+            window.location.href = '/Process';
+        } else {
+            alert("Wrong File Format!");
+        }
     },
     progressall: function (e, data) {
         // When the progress has been started,
