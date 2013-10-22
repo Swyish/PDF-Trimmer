@@ -5,7 +5,9 @@
     var endX = 0;
     var endY = 0;
 
+    //
     // On mouse click, set the start x, y position
+    //
     $("#overlay").mousedown(function (e) {
 
         $("#process-submit").prop('disabled', false);
@@ -27,7 +29,9 @@
         startY = endY;
     });
 
+    //
     // On mouse move, draw the rectangle with start x, y, and mouse position
+    //
     $("#overlay").mousemove(function (e) {
         if (mouseDown) {
 
@@ -67,12 +71,16 @@
         }
     });
 
-    // On mouse up, ends drawing a rectangle
+    //
+    // Mouse up will stop drawing the rectangle
+    //
     $("#overlay").mouseup(function (e) {
         mouseDown = false;
     });
 
-    // handles manual changes to the margins
+    //
+    // Handles the manual margin changes from the marginLeft textbox
+    //
     $("#marginLeft").change(function () {
         if (startX > endX) {
             endX = $("#marginLeft").val();
@@ -82,6 +90,9 @@
         redrawOverlay();
     });
 
+    //
+    // Handles the manual margin changes from the marginBottom textbox
+    //
     $("#marginBottom").change(function () {
         if (endY > startY) {
             endY = canvas.height - $("#marginBottom").val();
@@ -91,6 +102,9 @@
         redrawOverlay();
     });
 
+    //
+    // Handles the manual margin changes from the marginRight textbox
+    //
     $("#marginRight").change(function () {
         if (startX > endX) {
             startX = canvas.width - $("#marginRight").val();
@@ -100,6 +114,9 @@
         redrawOverlay();
     });
 
+    //
+    // Handles the manual margin changes from the marginTop textbox
+    //
     $("#marginTop").change(function () {
         if (endY > startY) {
             startY = $("#marginTop").val();
@@ -115,6 +132,9 @@
         }, 10000);
     });
 
+    //
+    // Redraw canvas overlay
+    //
     function redrawOverlay() {
         var c = document.getElementById("overlay");
         var ctx = c.getContext("2d");
@@ -126,6 +146,9 @@
         ctx.fillRect(startX, startY, endX - startX, endY - startY)
     }
 
+    //
+    // Find position of the mouse in the obj
+    //
     function findPos(obj) {
         var curleft = 0, curtop = 0;
         if (obj.offsetParent) {

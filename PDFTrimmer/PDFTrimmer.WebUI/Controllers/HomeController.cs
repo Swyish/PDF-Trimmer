@@ -92,10 +92,19 @@ namespace PDFTrimmer.WebUI.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="marginLeft"></param>
+        /// <param name="marginBottom"></param>
+        /// <param name="marginRight"></param>
+        /// <param name="marginTop"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Process(int marginLeft, int marginBottom, int marginRight, int marginTop)
         {
+            // Redirect user back to the upload screen if there is no sourceFile stored in the session
             if (Session.Contents["sourceFileName"] == null)
             {
                 return RedirectToAction("Index");
@@ -120,11 +129,13 @@ namespace PDFTrimmer.WebUI.Controllers
 
             if (response.IsSuccessful)
             {
+                // Removing all user files
                 System.IO.File.Delete(HostingEnvironment.MapPath("/Data/" + Session.Contents["sourceFileName"].ToString()));
                 System.IO.File.Delete(HostingEnvironment.MapPath("/Data/prepared-" + Session.Contents["sourceFileName"].ToString()));
                 System.IO.File.Delete(HostingEnvironment.MapPath("/Data/sample-" + Session.Contents["sourceFileName"].ToString()));
                 Session.Contents["sourceFileName"] = null;
 
+                // preparing the document for download
                 MemoryStream ms = new MemoryStream(response.OutputFile);
                 Response.ContentType = "application/pdf";
                 Response.AddHeader("content-disposition", "attachment;filename=" + Session.Contents["originalName"] + ".pdf");
@@ -141,6 +152,10 @@ namespace PDFTrimmer.WebUI.Controllers
             }
         }
 
+        /// <summary>
+        /// Displays the thank you page
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ThankYou()
         {
             return View();
