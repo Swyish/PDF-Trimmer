@@ -129,6 +129,10 @@ body {
             font-style: italic;
         }
 
+        body .contents .error-message-container {
+            color: red;
+        }
+
     body .process-form {
     }
 

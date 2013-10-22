@@ -38,7 +38,7 @@
 </p>
 <br />
 
-@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data", id="upload-form" }))
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data", id = "upload-form" }))
 {
     @Html.AntiForgeryToken();
     <span class="fileupload-container">
@@ -46,6 +46,9 @@
         <input type="file" name="pdfSource" id="fileupload" />
     </span>
 }
+<br />
+<p class="error-message-container">
+</p>
 
 @section scripts {
     <script src="~/Scripts/jquery.ui.widget.js"></script>
