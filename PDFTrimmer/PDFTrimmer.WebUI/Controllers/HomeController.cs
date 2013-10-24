@@ -52,7 +52,8 @@ namespace PDFTrimmer.WebUI.Controllers
             var tempFileName = Guid.NewGuid() + ".pdf";
             var baseFilePath = HostingEnvironment.MapPath("/Data/");
 
-            Session.Contents["originalName"] = pdfSource.FileName.Split('.')[0];
+            // Replaces commas from the original file name to prevent multiple server response error
+            Session.Contents["originalName"] = pdfSource.FileName.Split('.')[0].Replace(",", "");
             Session.Contents["sourceFileName"] = tempFileName;
 
             pdfSource.SaveAs(baseFilePath + tempFileName);
